@@ -1,0 +1,12 @@
+﻿Chương trình ngày 4/3:
+- Update phần load Database từ Server xuông
+- Chưa update phần load lại dữ liệu từ file Csv
+
+Chương trình Update ngày 15/04:
+
+- Thay đổi thời gian lấy mẫu cổng COM (550 => 450)
+- Chuyển vị trí check âm sắc xuống cuối cùng (7=>15)
+- Chuyển chu kỳ từ 100ms xuống 95ms để đáp ứng xử lý trong 20s
+- Tăng thời gian đợi mỗi vòng lên 10s
+- Thêm timeout cho COM
+

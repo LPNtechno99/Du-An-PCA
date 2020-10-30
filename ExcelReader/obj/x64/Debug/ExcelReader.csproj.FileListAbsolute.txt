@@ -1,0 +1,14 @@
+E:\VSVPro\SHIV_PhongCachAm\ExcelReader\bin\x64\Debug\ExcelReader.exe.config
+E:\VSVPro\SHIV_PhongCachAm\ExcelReader\bin\x64\Debug\ExcelReader.exe
+E:\VSVPro\SHIV_PhongCachAm\ExcelReader\bin\x64\Debug\ExcelReader.pdb
+E:\VSVPro\SHIV_PhongCachAm\ExcelReader\obj\x64\Debug\ExcelReader.csprojAssemblyReference.cache
+E:\VSVPro\SHIV_PhongCachAm\ExcelReader\obj\x64\Debug\MainWindow.baml
+E:\VSVPro\SHIV_PhongCachAm\ExcelReader\obj\x64\Debug\MainWindow.g.cs
+E:\VSVPro\SHIV_PhongCachAm\ExcelReader\obj\x64\Debug\App.g.cs
+E:\VSVPro\SHIV_PhongCachAm\ExcelReader\obj\x64\Debug\ExcelReader_MarkupCompile.cache
+E:\VSVPro\SHIV_PhongCachAm\ExcelReader\obj\x64\Debug\ExcelReader.g.resources
+E:\VSVPro\SHIV_PhongCachAm\ExcelReader\obj\x64\Debug\ExcelReader.Properties.Resources.resources
+E:\VSVPro\SHIV_PhongCachAm\ExcelReader\obj\x64\Debug\ExcelReader.csproj.GenerateResource.cache
+E:\VSVPro\SHIV_PhongCachAm\ExcelReader\obj\x64\Debug\ExcelReader.csproj.CoreCompileInputs.cache
+E:\VSVPro\SHIV_PhongCachAm\ExcelReader\obj\x64\Debug\ExcelReader.exe
+E:\VSVPro\SHIV_PhongCachAm\ExcelReader\obj\x64\Debug\ExcelReader.pdb

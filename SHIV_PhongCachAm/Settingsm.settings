@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SHIV_PhongCachAm" GeneratedClassName="Settingsm">
+  <Profiles />
+  <Settings>
+    <Setting Name="DBServer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Z:\Engineering\21 Mr LongKT\0. CHECK SHEET ALTAX\BAN CHECK\IOT\DATA KTVH\DATA BASE KTVK GOC.xls</Value>
+    </Setting>
+    <Setting Name="KHServer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Z:\GearMotorG\100. Ke hoach lap rap\1.KE HOACH LAP RAP ALTAX.xlsx</Value>
+    </Setting>
+    <Setting Name="DBLocation" Type="System.String" Scope="User">
+      <Value Profile="(Default)">E:\DATA BASE KTVK.xls</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

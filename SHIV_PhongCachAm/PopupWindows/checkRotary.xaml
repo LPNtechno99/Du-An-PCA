@@ -1,0 +1,42 @@
+﻿<Window x:Class="SHIV_PhongCachAm.PopupWindows.checkRotary"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SHIV_PhongCachAm.PopupWindows"
+        mc:Ignorable="d"
+        Title="Kiểm tra hướng quay" Height="180" Width="560" WindowStartupLocation="CenterScreen">
+
+
+    <Window.Resources>
+        <RoutedUICommand x:Key="MyCommand1" Text="Text" />
+        <RoutedUICommand x:Key="MyCommand2" Text="Another Text" />
+    </Window.Resources>
+
+    <Window.CommandBindings>
+        <CommandBinding Command="{StaticResource MyCommand1}" 
+                    Executed="FirstMethod" />
+        <CommandBinding Command="{StaticResource MyCommand2}" 
+                    Executed="SecondMethod" />
+    </Window.CommandBindings>
+
+    <Window.InputBindings>
+        <KeyBinding Key="F1" Command="{StaticResource MyCommand1}" />
+        <KeyBinding Key="F5" Command="{StaticResource MyCommand2}" />
+    </Window.InputBindings>
+
+    <Grid>
+        <StackPanel>
+            <Label ContentStringFormat="{}Kiểm tra hướng quay động cơ {0}" Content="{Binding}" Name="lblTitle" FontSize="30" Height="50" Margin="20">
+            </Label>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Name="btnOK" PreviewMouseDown="btnOK_PreviewMouseDown"  Grid.Column="0" Margin="20, 10, 10, 10" Height="25">OK</Button>
+                <Button Name="btnNG" PreviewMouseDown="btnNG_PreviewMouseDown" Grid.Column="1" Margin="10, 10, 20, 10" Height="25">NG</Button>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Window>

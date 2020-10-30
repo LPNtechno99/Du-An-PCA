@@ -1,0 +1,702 @@
+﻿<Window x:Class="SHIV_PhongCachAm.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SHIV_PhongCachAm"
+        mc:Ignorable="d"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:my="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+        Title="MainWindow" x:Name="mainWD" Closing="mainWD_Closing" Height="750" Width="1200" MinHeight="750" WindowStartupLocation="CenterScreen" Topmost="False" WindowState="Maximized" Icon="sumitomo_heavy_industries_416x416_LE3_4.ico">
+    <Window.Resources>
+        <RoutedUICommand x:Key="MyCommandF1" Text="Text" />
+        <RoutedUICommand x:Key="MyCommandF8" Text="Text" />
+        <RoutedUICommand x:Key="MyCommandF10" Text="Text" />
+        <RoutedUICommand x:Key="MyCommandS" Text="Text" />
+        <RoutedUICommand x:Key="MyCommandO" Text="Text" />
+
+        <ControlTemplate x:Key="lblMainTemplate" TargetType="Label">
+            <Grid>
+                <Border BorderThickness="0.6" BorderBrush="#FF464646">
+                    <Rectangle Fill="#FFF7F7F7" Height="28"></Rectangle>
+                </Border>
+                <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Bottom" TextBlock.Foreground="Black" TextBlock.FontFamily="Open Sans"
+                                  TextBlock.FontWeight="Bold" TextBlock.FontSize="14" Margin="6,0,6,4" ContentStringFormat="{}{0:0.##}"/>
+            </Grid>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="lblMainTemplate_FAIL" TargetType="Label">
+            <Grid>
+                <Border BorderThickness="0.6" BorderBrush="#FF464646">
+                    <Rectangle Fill="#FFE03131" Height="28"></Rectangle>
+                </Border>
+                <ContentPresenter Content="{TemplateBinding Content}" TextBlock.Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Bottom" TextBlock.FontFamily="Open Sans"
+                                  TextBlock.FontWeight="Bold" TextBlock.FontSize="14" Margin="6,0,6,4" ContentStringFormat="{}{0:0.##}"/>
+            </Grid>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="lblMainTemplate_TRUE" TargetType="Label">
+            <Grid>
+                <Border BorderThickness="0.6" BorderBrush="#FF464646">
+                    <Rectangle Fill="#29E013" Height="28"></Rectangle>
+                </Border>
+                <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Bottom" TextBlock.Foreground="White" TextBlock.FontFamily="Open Sans"
+                                  TextBlock.FontWeight="Bold" TextBlock.FontSize="14" Margin="6,0,6,4" ContentStringFormat="{}{0:0.##}"/>
+            </Grid>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="lblOK" TargetType="Label">
+            <Grid>
+                <Border BorderThickness="0.6" BorderBrush="#FF464646">
+                    <Rectangle Fill="#29E013" Height="28"></Rectangle>
+                </Border>
+                <ContentPresenter Content="OK" HorizontalAlignment="Center" VerticalAlignment="Bottom" TextBlock.Foreground="White" TextBlock.FontFamily="Open Sans"
+                                  TextBlock.FontWeight="Bold" TextBlock.FontSize="13" Margin="6,0,6,4" ContentStringFormat="{}{0:0.##}"/>
+            </Grid>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="lblNG" TargetType="Label">
+            <Grid>
+                <Border BorderThickness="0.6" BorderBrush="#FF464646">
+                    <Rectangle Fill="#FFE03131" Height="28"></Rectangle>
+                </Border>
+                <ContentPresenter Content="NG" HorizontalAlignment="Center" VerticalAlignment="Bottom" TextBlock.Foreground="White" TextBlock.FontFamily="Open Sans"
+                                  TextBlock.FontWeight="Bold" TextBlock.FontSize="13" Margin="6,0,6,4" ContentStringFormat="{}{0:0.##}"/>
+            </Grid>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="lblDanhgiaNG" TargetType="Label">
+            <Grid>
+                <Border BorderThickness="0.6" BorderBrush="#FF464646">
+                    <Rectangle Fill="#FFE03131" Height="28"></Rectangle>
+                </Border>
+                <ContentPresenter Content="Đánh giá NG" HorizontalAlignment="Center" VerticalAlignment="Bottom" TextBlock.Foreground="White" TextBlock.FontFamily="Open Sans"
+                                  TextBlock.FontWeight="Bold" TextBlock.FontSize="14" Margin="6,0,6,4" ContentStringFormat="{}{0:0.##}"/>
+            </Grid>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="lblDanhgiaOK" TargetType="Label">
+            <Grid>
+                <Border BorderThickness="0.6" BorderBrush="#FF464646">
+                    <Rectangle Fill="#29E013" Height="28"></Rectangle>
+                </Border>
+                <ContentPresenter Content="Đánh giá OK" HorizontalAlignment="Center" VerticalAlignment="Bottom" TextBlock.Foreground="White" TextBlock.FontFamily="Open Sans"
+                                  TextBlock.FontWeight="Bold" TextBlock.FontSize="14" Margin="6,0,6,4" ContentStringFormat="{}{0:0.##}"/>
+            </Grid>
+        </ControlTemplate>
+
+        <Style x:Key="myDanhgia" TargetType="{x:Type Label}">
+            <Setter Property="Template" Value="{StaticResource lblMainTemplate}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Value}" Value="0">
+                    <Setter Property="Template" Value="{StaticResource lblMainTemplate}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Value}" Value="5">
+                    <Setter Property="Template" Value="{StaticResource lblDanhgiaOK}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Value}" Value="15">
+                    <Setter Property="Template" Value="{StaticResource lblDanhgiaNG}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="myValueOKNG" TargetType="{x:Type Label}">
+            <Setter Property="Template" Value="{StaticResource lblMainTemplate}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Color}" Value="0">
+                    <Setter Property="Template" Value="{StaticResource lblMainTemplate}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Color}" Value="1">
+                    <Setter Property="Template" Value="{StaticResource lblMainTemplate_TRUE}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Color}" Value="2">
+                    <Setter Property="Template" Value="{StaticResource lblMainTemplate_FAIL}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="myDisplayDataFB" TargetType="{x:Type Label}">
+            <Setter Property="Template" Value="{StaticResource lblMainTemplate}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=giatriDanhgia.Value}" Value="0">
+                    <Setter Property="Template" Value="{StaticResource lblMainTemplate}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=giatriDanhgia.Value}" Value="1">
+                    <Setter Property="Template" Value="{StaticResource lblMainTemplate}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=giatriDanhgia.Value}" Value="2">
+                    <Setter Property="Template" Value="{StaticResource lblMainTemplate_FAIL}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="myOKLamp" TargetType="{x:Type Label}">
+            <Setter Property="Template" Value="{StaticResource lblMainTemplate}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Value}" Value="0">
+                    <Setter Property="Template" Value="{StaticResource lblMainTemplate}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Value}" Value="1">
+                    <Setter Property="Template" Value="{StaticResource lblOK}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Value}" Value="2">
+                    <Setter Property="Template" Value="{StaticResource lblNG}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="myNGLamp" TargetType="{x:Type Label}">
+            <Setter Property="Template" Value="{StaticResource lblMainTemplate}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Value}" Value="0">
+                    <Setter Property="Template" Value="{StaticResource lblMainTemplate}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Value}" Value="1">
+                    <Setter Property="Template" Value="{StaticResource lblMainTemplate}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Value}" Value="2">
+                    <Setter Property="Template" Value="{StaticResource lblNG}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <ControlTemplate x:Key="lblMainTemplate_Title" TargetType="Label">
+            <Grid>
+                <Border BorderThickness="0.6" BorderBrush="#FF303030">
+                    <Rectangle Fill="#FF212446" Height="30"></Rectangle>
+                </Border>
+                <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" TextBlock.Foreground="White" TextBlock.FontFamily="Open Sans"
+                                  TextBlock.FontWeight="Bold" TextBlock.FontSize="14"/>
+            </Grid>
+        </ControlTemplate>
+    </Window.Resources>
+
+    <Window.CommandBindings>
+        <CommandBinding Command="{StaticResource MyCommandF1}" Executed="EventF1Push_Process"/>
+        <CommandBinding Command="{StaticResource MyCommandF8}" Executed="EventF8Push_Process"/>
+        <CommandBinding Command="{StaticResource MyCommandF10}" Executed="EventF10Push_Process"/>
+        <CommandBinding Command="{StaticResource MyCommandS}" Executed="EventSPush_Process"/>
+        <CommandBinding Command="{StaticResource MyCommandO}" Executed="EventOPush_Process"/>
+    </Window.CommandBindings>
+
+    <Window.InputBindings>
+        <KeyBinding Key="F1" Command="{StaticResource MyCommandF1}" />
+        <KeyBinding Key="F8" Command="{StaticResource MyCommandF8}" />
+        <KeyBinding Key="F10" Command="{StaticResource MyCommandF10}" />
+        <KeyBinding Key="S" Command="{StaticResource MyCommandS}" />
+        <KeyBinding Key="O" Command="{StaticResource MyCommandO}" />
+    </Window.InputBindings>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition MinHeight="200"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Template="{StaticResource lblMainTemplate_Title}">
+                Đo tự động
+            </Label>
+            <Label Grid.Column="0" Margin="10,0,0,0" Foreground="White" FontWeight="Bold" FontSize="14" Name="lblTimerCycle" Height="30" Width="50" HorizontalAlignment="Left" Content="{Binding Value}">
+            </Label>
+            <Label Grid.Column="1" Name="lblStatus" Template="{StaticResource lblMainTemplate_Title}" Content="{Binding Value}">
+            </Label>
+            <Label Name="lblDatetime" PreviewMouseDown="lblDatetime_PreviewMouseDown" Grid.Column="2" Template="{StaticResource lblMainTemplate_Title}" Content="{Binding Value}">
+            </Label>
+            <Label Name="lblLanguage" PreviewMouseDown="lblLanguage_PreviewMouseDown" Grid.Column="3" Template="{StaticResource lblMainTemplate_Title}">
+                Vietnamese/English
+            </Label>
+        </Grid>
+        <Grid Grid.Row="1" Margin="0, 5, 0, 0">
+            <StackPanel Background="White">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Grid.ColumnSpan="2" Template="{StaticResource lblMainTemplate_Title}">
+                        Dữ liệu đầu vào
+                    </Label>
+                    <Label Grid.Column="2" Template="{StaticResource lblMainTemplate_Title}">
+                        Trạng thái thông tin
+                    </Label>
+                    <Label Grid.Column="3" Grid.ColumnSpan="2" Template="{StaticResource lblMainTemplate_Title}">
+                        Thông tin sản phẩm
+                    </Label>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Template="{StaticResource lblMainTemplate}">
+                        Tên người kiểm tra vận hành
+                    </Label>
+                    <Label Name="lblNguoiVanhanh" Content="{Binding Value}" PreviewMouseDown="lblNguoiVanhanh_PreviewMouseDown" Grid.Column="1" Template="{StaticResource lblMainTemplate}">
+                    </Label>
+                    <Label Grid.Column="2" Template="{StaticResource lblMainTemplate}">
+                        ----
+                    </Label>
+                    <Label Grid.Column="3" Template="{StaticResource lblMainTemplate}">
+                        PID
+                    </Label>
+                    <Label Name="lblPID" Grid.Column="4" Template="{StaticResource lblMainTemplate}" Content="{Binding Value}">
+                    </Label>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Template="{StaticResource lblMainTemplate}" FontFamily="Open Sans">
+                        Mã Order
+                    </Label>
+                    <Label Name="lblMaOrder" PreviewMouseDown="lblMaOrder_PreviewMouseDown" Grid.Column="1" Template="{StaticResource lblMainTemplate}" Content="{Binding Value}">
+                    </Label>
+                    <Label Grid.Column="2" Template="{StaticResource lblMainTemplate}">
+                        Mã hàng điện 1 pha
+                    </Label>
+                    <CheckBox Name="chk1PhaOrder" IsChecked="{Binding Path=Value}" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20, 3, 10, 0"/>
+                    <Label Grid.Column="3" Template="{StaticResource lblMainTemplate}">
+                        Mô tả sản phẩm
+                    </Label>
+                    <Label Name="lblMotaSanpham" Grid.Column="5" Template="{StaticResource lblMainTemplate}" Content="{Binding Value}">
+                    </Label>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Template="{StaticResource lblMainTemplate}">
+                        Số thứ tự sản phẩm
+                    </Label>
+                    <Label Name="lblSTTSanpham" DataContextChanged="lblSTTSanpham_DataContextChanged" 
+                           MouseDown="lblSTTSanpham_MouseDown" Grid.Column="1" Template="{StaticResource lblMainTemplate}"
+                           Content="{Binding Value}">
+                    </Label>
+                    <Label Grid.Column="2" Template="{StaticResource lblMainTemplate}">
+                        ----
+                    </Label>
+                    <Label Grid.Column="3" Template="{StaticResource lblMainTemplate}">
+                        Giảm tốc
+                    </Label>
+                    <Label Name="lblGiamtoc" Grid.Column="4" Template="{StaticResource lblMainTemplate}" Content="{Binding Value}">
+                    </Label>
+                </Grid>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="2">
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Template="{StaticResource lblMainTemplate_Title}">
+                        Điện áp và tần số nguồn Motor
+                    </Label>
+                    <Label Grid.Column="1" Template="{StaticResource lblMainTemplate_Title}">
+                        Điện áp tiêu chuẩn
+                    </Label>
+                    <Label Grid.Column="2" Template="{StaticResource lblMainTemplate_Title}">
+                        Điện áp thực tế
+                    </Label>
+                    <Label Grid.Column="3" Template="{StaticResource lblMainTemplate_Title}">
+                        Tần số tiêu chuẩn
+                    </Label>
+                    <Label Grid.Column="4" Template="{StaticResource lblMainTemplate_Title}">
+                        Tần số thực tế
+                    </Label>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Template="{StaticResource lblMainTemplate}">
+                        ----
+                    </Label>
+                    <Label Name="lblDienapChuan" Grid.Column="1" Template="{StaticResource lblMainTemplate}" Content="{Binding Value}">
+                    </Label>
+                    <Label Grid.Column="2" Name="lblDienapThucte" Template="{StaticResource lblMainTemplate}" Content="{Binding Value}">
+                    </Label>
+                    <Label Name="lblTansoChuan" Grid.Column="3" Template="{StaticResource lblMainTemplate}" Content="{Binding Value}">
+                    </Label>
+                    <Label Grid.Column="4" Name="lblTansoThucte" Template="{StaticResource lblMainTemplate}" Content="{Binding Value}">
+                    </Label>
+                </Grid>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="3">
+            <StackPanel Background="White">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Template="{StaticResource lblMainTemplate_Title}">
+                        Thông số kiểm tra
+                    </Label>
+                    <Label Grid.Column="1" Template="{StaticResource lblMainTemplate_Title}">
+                        Giá trị tiêu chuẩn
+                    </Label>
+                    <Label Grid.Column="2" Template="{StaticResource lblMainTemplate_Title}">
+                        CW - Thuận
+                    </Label>
+                    <Label Grid.Column="3" Template="{StaticResource lblMainTemplate_Title}">
+                        CCW - Nghịch
+                    </Label>
+                    <Grid Grid.Column="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="0*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Template="{StaticResource lblMainTemplate_Title}">
+                            Độ lệch hai chiều
+                        </Label>
+                        <Label Grid.Column="1" Grid.ColumnSpan="2" Template="{StaticResource lblMainTemplate_Title}">
+                            Đánh giá
+                        </Label>
+                    </Grid>
+                </Grid>
+                <Grid Background="WhiteSmoke">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Template="{StaticResource lblMainTemplate}">
+                        Giá trị vòng quay (vòng/phút)
+                    </Label>
+                    <Label Name="lblTcVongquay" Grid.Column="1" Template="{StaticResource lblMainTemplate}" Content="{Binding Value}">
+                    </Label>
+                    <Label Name="lblVongquayFwdMax" Grid.Column="2" Style="{StaticResource myValueOKNG}" Content="{Binding Value}" />
+                    <Label Name="lblVongquayBwdMax" Grid.Column="3" Style="{StaticResource myValueOKNG}" Content="{Binding Value}" />
+                    <Grid Grid.Column="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="0*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Name="lblVongquayLech" Grid.Column="0" Template="{StaticResource lblMainTemplate}" Content="{Binding Value}" />
+                        <Label Name="lblOKVongquay" Grid.Column="1" Style="{StaticResource myOKLamp}">
+                        </Label>
+                        <Label Name="lblNGVongquay" Grid.Column="2" Style="{StaticResource myNGLamp}">
+                            NG
+                        </Label>
+                    </Grid>
+                </Grid>
+                <Grid Background="LightGray">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Template="{StaticResource lblMainTemplate}">
+                        Hướng quay trục xuất lực
+                    </Label>
+                    <Label Grid.Column="1" Template="{StaticResource lblMainTemplate}" Content="{Binding Value}"/>
+                    <Label Name="lblHuongquayMax" Grid.Column="2" Grid.ColumnSpan="2" Style="{StaticResource myDanhgia}">
+                    </Label>
+                    <Grid Grid.Column="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="0*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Template="{StaticResource lblMainTemplate}">
+                        </Label>
+                        <Label Name="lblOKXuatluc" Grid.Column="1" Style="{StaticResource myOKLamp}">
+                        </Label>
+                        <Label Name="lblNGXuatluc" Grid.Column="2" Style="{StaticResource myNGLamp}">
+                            NG
+                        </Label>
+                    </Grid>
+                </Grid>
+                <Grid Background="WhiteSmoke">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Template="{StaticResource lblMainTemplate}">
+                        Giá trị dòng điện (A)
+                    </Label>
+                    <Label Name="lblTcDongdien" Grid.Column="1" Template="{StaticResource lblMainTemplate}" Content="{Binding Value}">
+                    </Label>
+                    <!--<Label Name="lblDongdienFwdMax" Grid.Column="2" Template="{StaticResource lblMainTemplate}" Content="{Binding Value}" />-->
+                    <Label Name="lblDongdienFwdMax" Grid.Column="2" Style="{StaticResource myValueOKNG}" Content="{Binding Value}" />
+                    <Label Name="lblDongdienBwdMax" Grid.Column="3" Style="{StaticResource myValueOKNG}" Content="{Binding Value}" />
+                    <Grid Grid.Column="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="0*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Name="lblDongdienLech" Grid.Column="0" Template="{StaticResource lblMainTemplate}" Content="{Binding Value}" />
+
+                        <Label Name="lblOKDongdien" Grid.Column="1" Style="{StaticResource myOKLamp}">
+                        </Label>
+                        <Label Name="lblNGDongdien" Grid.Column="2" Style="{StaticResource myNGLamp}">
+                            NG
+                        </Label>
+                    </Grid>
+                </Grid>
+                <Grid Background="WhiteSmoke">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Template="{StaticResource lblMainTemplate}">
+                        Giá trị nhập lực (W)
+                    </Label>
+                    <Label Name="lblTCNhapluc" Grid.Column="1" Template="{StaticResource lblMainTemplate}"  Content="{Binding Value}">
+                    </Label>
+                    <Label Name="lblNhaplucFwdMax" Grid.Column="2" Style="{StaticResource myValueOKNG}" Content="{Binding Value}" />
+                    <Label Name="lblNhaplucBwdMax" Grid.Column="3" Style="{StaticResource myValueOKNG}" Content="{Binding Value}" />
+                    <Grid Grid.Column="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="0*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Name="lblNhaplucLech" Grid.Column="0" Template="{StaticResource lblMainTemplate}" Content="{Binding Value}" />
+
+                        <Label Name="lblOKNhapluc" Grid.Column="1" Style="{StaticResource myOKLamp}">
+                        </Label>
+                        <Label Name="lblNGNhapluc" Grid.Column="2" Style="{StaticResource myNGLamp}">
+                            NG
+                        </Label>
+                    </Grid>
+                </Grid>
+                <Grid Background="WhiteSmoke">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Template="{StaticResource lblMainTemplate}">
+                        Giá trị độ rung (m/s)
+                    </Label>
+                    <Label Name="lblTcDorung" Grid.Column="1" Template="{StaticResource lblMainTemplate}" Content="{Binding Value}">
+                    </Label>
+                    <Label Name="lblDorungFwdMax" Grid.Column="2" Style="{StaticResource myValueOKNG}" Content="{Binding Path=Value}" />
+                    <Label Name="lblDorungBwdMax" Grid.Column="3" Style="{StaticResource myValueOKNG}" Content="{Binding Path=Value}" />
+
+                    <Grid Grid.Column="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="0*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Name="lblDorungLech" Grid.Column="0" Template="{StaticResource lblMainTemplate}" Content="{Binding Value}" />
+
+                        <Label Name="lblOKDorung" Grid.Column="1" Style="{StaticResource myOKLamp}">
+                        </Label>
+                        <Label Name="lblNGDorung" Grid.Column="2" Style="{StaticResource myNGLamp}">
+                            NG
+                        </Label>
+                    </Grid>
+                </Grid>
+                <Grid Background="LightGray">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Template="{StaticResource lblMainTemplate}">
+                        Giá trị tiếng ồn (dB)
+                    </Label>
+                    <Label Name="lblTcTiengon" Grid.Column="1" Template="{StaticResource lblMainTemplate}" Content="{Binding Value}">
+                    </Label>
+                    <Label Name="lblTiengonFwdMax" Grid.Column="2" Style="{StaticResource myValueOKNG}" Content="{Binding Value}" ContentStringFormat="Bye {0}" />
+                    <Label Name="lblTiengonBwdMax" Grid.Column="3" Style="{StaticResource myValueOKNG}" Content="{Binding Value}" ContentStringFormat="Bye {0}" />
+                    <Grid Grid.Column="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="0*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Name="lblTiengonLech" Grid.Column="0" Style="{StaticResource myValueOKNG}" Content="{Binding Value}" />
+
+                        <Label Name="lblOKTiengon" Grid.Column="1" Style="{StaticResource myOKLamp}">
+                        </Label>
+                        <Label Name="lblNGTiengon" Grid.Column="2" Style="{StaticResource myNGLamp}">
+                            NG
+                        </Label>
+                    </Grid>
+                </Grid>
+                <Grid Background="WhiteSmoke">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Template="{StaticResource lblMainTemplate}">
+                        Âm sắc
+                    </Label>
+                    <Label Grid.Column="1" Template="{StaticResource lblMainTemplate}">
+                    </Label>
+                    <Label Name="lblAmsacThuan" Grid.Column="2" Style="{StaticResource myDanhgia}">
+                    </Label>
+                    <Label Name="lblAmsacNghich" Grid.Column="3" Style="{StaticResource myDanhgia}">
+                    </Label>
+                    <Grid Grid.Column="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="0*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Template="{StaticResource lblMainTemplate}">
+                        </Label>
+                        <Label Name="lblOKAmsac" Grid.Column="1" Style="{StaticResource myOKLamp}">
+                        </Label>
+                        <Label Name="lblNGAmsac" Grid.Column="2" Style="{StaticResource myNGLamp}">
+                            NG
+                        </Label>
+                    </Grid>
+                </Grid>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="4" Background="#FFF3F3F3" Margin="0,1,0,1" MinHeight="350">
+            <my:Chart  Name="LineChart1" Title="Total Marks" FontSize="18" FontWeight="DemiBold"
+            VerticalAlignment="Top" Margin="5" Height="250">
+                <my:LineSeries Name="LineChartChild" DependentValuePath="Value" Title="Độ rung" 
+                        IndependentValuePath="Key" ItemsSource="{Binding}" DataContext="{Binding}"
+                        IsSelectionEnabled="True">
+                    <my:LineSeries.DataPointStyle>
+                        <Style TargetType="{x:Type my:LineDataPoint}">
+                            <Setter Property="Background" Value="MidnightBlue"/>
+                            <Setter Property="Height" Value="0"/>
+                            <Setter Property="Width" Value="0"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="my:LineDataPoint">
+                                        <Grid x:Name="Root" />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </my:LineSeries.DataPointStyle>
+                    <my:LineSeries.DependentRangeAxis>
+                        <my:LinearAxis Name="valueSettingYRange" Orientation="Y" Minimum="0" Maximum="{Binding Value}"/>
+                    </my:LineSeries.DependentRangeAxis>
+                </my:LineSeries>
+
+                <my:LineSeries Name="LineChartChild_TempTiengon" DependentValuePath="Value" Title="Tiếng ồn" 
+                        IndependentValuePath="Key" ItemsSource="{Binding}" DataContext="{Binding}"
+                        IsSelectionEnabled="True">
+                    <my:LineSeries.DataPointStyle>
+                        <Style TargetType="{x:Type my:LineDataPoint}">
+                            <Setter Property="Background" Value="DarkGreen"/>
+                            <Setter Property="Height" Value="0"/>
+                            <Setter Property="Width" Value="0"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="my:LineDataPoint">
+                                        <Grid x:Name="Root" />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </my:LineSeries.DataPointStyle>
+                </my:LineSeries>
+
+                <my:LineSeries Name="LineChartMax" DependentValuePath="Value" Title="Giới hạn" 
+                        IndependentValuePath="Key" ItemsSource="{Binding}" DataContext="{Binding}"
+                        IsSelectionEnabled="True">
+                    <my:LineSeries.DataPointStyle>
+                        <Style TargetType="{x:Type my:LineDataPoint}">
+                            <Setter Property="Background" Value="DarkRed"/>
+                            <Setter Property="Height" Value="0"/>
+                            <Setter Property="Width" Value="0"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="my:LineDataPoint">
+                                        <Grid x:Name="Root" />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </my:LineSeries.DataPointStyle>
+                </my:LineSeries>
+            </my:Chart>
+            <Label x:Name="lblIsUse" BorderBrush="Black" HorizontalContentAlignment="Center" BorderThickness="1" Content="Khong Su Dung" HorizontalAlignment="Right" Margin="0,16,22,0" VerticalAlignment="Top" Width="105" PreviewMouseDown="lblIsUse_PreviewMouseDown"/>
+        </Grid>
+        <Grid Grid.Row="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Name="btnF1" PreviewMouseDown="btnF1_PreviewMouseDown" Grid.Column="0" Template="{StaticResource lblMainTemplate_Title}">
+                F1 - Chuyển đồ thị
+            </Label>
+            <Label Name="btnF3" MouseDown="btnF3_MouseDown" Grid.Column="1" Template="{StaticResource lblMainTemplate_Title}">
+                F3 - Cài đặt
+            </Label>
+            <Label Grid.Column="2" PreviewMouseDown="EventF10Push_Process_Mouse" Template="{StaticResource lblMainTemplate_Title}">
+                F10 - Xuất đặc biệt
+            </Label>
+            <Label Grid.Column="3" PreviewMouseDown="LabelF9_PreviewMouseDown" Template="{StaticResource lblMainTemplate_Title}">
+                F9 - Đặt lại
+            </Label>
+            <Label Grid.Column="4" PreviewMouseDown="EventF8Push_Process" Template="{StaticResource lblMainTemplate_Title}">
+                F8 - Load lại dữ liệu
+            </Label>
+            <Label Grid.Column="5" Template="{StaticResource lblMainTemplate_Title}">
+                F12- Kết thúc
+            </Label>
+        </Grid>
+    </Grid>
+</Window>

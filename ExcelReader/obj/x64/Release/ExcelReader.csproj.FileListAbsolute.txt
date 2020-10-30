@@ -1,0 +1,13 @@
+E:\NewUpdate\SHIV_PhongCachAm\ExcelReader\bin\x64\Release\ExcelReader.exe.config
+E:\NewUpdate\SHIV_PhongCachAm\ExcelReader\bin\x64\Release\ExcelReader.exe
+E:\NewUpdate\SHIV_PhongCachAm\ExcelReader\bin\x64\Release\ExcelReader.pdb
+E:\NewUpdate\SHIV_PhongCachAm\ExcelReader\obj\x64\Release\MainWindow.baml
+E:\NewUpdate\SHIV_PhongCachAm\ExcelReader\obj\x64\Release\MainWindow.g.cs
+E:\NewUpdate\SHIV_PhongCachAm\ExcelReader\obj\x64\Release\App.g.cs
+E:\NewUpdate\SHIV_PhongCachAm\ExcelReader\obj\x64\Release\ExcelReader_MarkupCompile.cache
+E:\NewUpdate\SHIV_PhongCachAm\ExcelReader\obj\x64\Release\ExcelReader.g.resources
+E:\NewUpdate\SHIV_PhongCachAm\ExcelReader\obj\x64\Release\ExcelReader.Properties.Resources.resources
+E:\NewUpdate\SHIV_PhongCachAm\ExcelReader\obj\x64\Release\ExcelReader.csproj.GenerateResource.cache
+E:\NewUpdate\SHIV_PhongCachAm\ExcelReader\obj\x64\Release\ExcelReader.csproj.CoreCompileInputs.cache
+E:\NewUpdate\SHIV_PhongCachAm\ExcelReader\obj\x64\Release\ExcelReader.exe
+E:\NewUpdate\SHIV_PhongCachAm\ExcelReader\obj\x64\Release\ExcelReader.pdb
